@@ -2,7 +2,7 @@
 
 -include("ecsalt.hrl").
 
--export([ put/3, remove/3, find/3, match/2, foreach/3 ]).
+-export([put/3, remove/3, find/3, match/2, foreach/3]).
 
 -spec put([{term(), term()}], id(), world()) -> ok.
 put(Components, EntityID, World) ->

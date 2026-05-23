@@ -2,7 +2,7 @@
 
 -include("ecsalt.hrl").
 
--export([ register/2, register/3, unregister/2 ]).
+-export([register/2, register/3, unregister/2]).
 
 -spec register(system(), world()) -> {ok, world()}.
 register(Callback, World) ->

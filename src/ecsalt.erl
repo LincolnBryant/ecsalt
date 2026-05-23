@@ -2,7 +2,7 @@
 -doc "Entity Component System".
 
 -export([new/0, delete/1]).
--export([ proc/1, proc/2, to_map/1 ]).
+-export([proc/1, proc/2, to_map/1]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Types and Records
@@ -10,7 +10,7 @@
 -include("ecsalt.hrl").
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% AP 
+% AP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 -doc """
@@ -62,7 +62,7 @@ proc(Data, World) ->
         Result =
             case Sys of
                 {M, F, 2} ->
-					M:F(Data, World);
+                    M:F(Data, World);
                 SysFun ->
                     SysFun(Data, World)
             end,
