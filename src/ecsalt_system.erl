@@ -2,18 +2,14 @@
 
 -include("ecsalt.hrl").
 
--export([
-    new/2,
-    new/3,
-    delete/2
-]).
+-export([ register/2, register/3, unregister/2 ]).
 
--spec new(system(), world()) -> {ok, world()}.
-new(Callback, World) ->
-    new(Callback, 0, World).
+-spec register(system(), world()) -> {ok, world()}.
+register(Callback, World) ->
+    register(Callback, 0, World).
 
--spec new(system(), integer(), world()) -> {ok, world()}.
-new(Callback, Priority, World) ->
+-spec register(system(), integer(), world()) -> {ok, world()}.
+register(Callback, Priority, World) ->
     #world{systems = S} = World,
     S0 =
         case lists:keytake(Callback, 2, S) of
@@ -26,8 +22,8 @@ new(Callback, Priority, World) ->
     S1 = lists:keysort(1, [{Priority, Callback} | S0]),
     {ok, World#world{systems = S1}}.
 
--spec delete(system(), world()) -> {ok, world()}.
-delete(Callback, World) ->
+-spec unregister(system(), world()) -> {ok, world()}.
+unregister(Callback, World) ->
     #world{systems = S} = World,
     S1 = lists:keydelete(Callback, 2, S),
     {ok, World#world{systems = S1}}.
