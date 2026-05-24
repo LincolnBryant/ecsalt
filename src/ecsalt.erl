@@ -14,10 +14,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 -doc """
-Create a new ECS world with default ETS options (public tables). Returns an
-opaque world record used by all other API functions.
+Create a new ECS world with default ETS options. Returns an opaque world record
+used by all other API functions.
 
-See also new/1, especially if you need to start ECS with public tables for
+See also new/1, especially if you need to start ECSalt with public tables for
 multi-process access.
 """.
 -spec new() -> world().
