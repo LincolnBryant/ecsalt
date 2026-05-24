@@ -1,6 +1,8 @@
 -module(ecsalt_system).
 -moduledoc "Register, list, and unregister callbacks".
 
+-callback proc(Data :: term(), World :: ecsalt:world()) -> term().
+
 -include("ecsalt.hrl").
 
 -export([register/2, register/3, unregister/2, list/1]).
