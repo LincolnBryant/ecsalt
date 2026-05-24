@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.39.1">
+    <meta name="project" content="ecsalt v2.0.0">
+
+
+    <title>ecsalt_component — ecsalt v2.0.0</title>
+
+    <link rel="stylesheet" href="dist/html-erlang-7YNYEB7F.css" />
+
+    <script defer src="dist/sidebar_items-0FDB9982.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-HBZYRXZS.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="api-reference.html" class="sidebar-projectName" translate="no">
+ecsalt
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v2.0.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of ecsalt</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">ecsalt_component</span> 
+      <small class="app-vsn" translate="no">(ecsalt v2.0.0)</small>
+
+    </h1>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Put, remove, and query named data on entities.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:component/0" data-no-tooltip="" translate="no">component()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:entity/0" data-no-tooltip="" translate="no">entity()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:id/0" data-no-tooltip="" translate="no">id()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:world/0" data-no-tooltip="" translate="no">world()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#fold/4" data-no-tooltip="" translate="no">fold(ComponentList, Fun, Acc0, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fold a function over all entities matching a given set of components,
+accumulating a result.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#foreach/3" data-no-tooltip="" translate="no">foreach(ComponentList, Fun, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>For each entity with the specified Component, apply fun(EntityID, Values).</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#match/2" data-no-tooltip="" translate="no">match(ComponentList, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Return all entities matching a given set of components. Returns empty list if
+there are no matches.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put/3" data-no-tooltip="" translate="no">put(Components, EntityID, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Associate a component defined as the tuple {key,value} with an entity. If the
+component already exists, it will be replaced with the new value. Returns the
+opaque world() type.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#remove/3" data-no-tooltip="" translate="no">remove(Components, EntityID, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Remove a component from a given entity. This function will always succeed even
+if the component does not exist.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update/4" data-no-tooltip="" translate="no">update(Name, Fun, EntityID, World)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Update a component's value by applying a function to it. The component
+must already exist on the entity.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+
+    <div class="types-list">
+<section class="detail" id="t:component/0">
+
+  <div class="detail-header">
+    <a href="#t:component/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">component()</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> component() :: {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:entity/0">
+
+  <div class="detail-header">
+    <a href="#t:entity/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">entity()</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> entity() :: {<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>(), [<a href="#t:component/0">component</a>()]}.</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:id/0">
+
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">id()</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-type</span> id() :: <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:identifier/0">identifier</a>().</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:world/0">
+
+  <div class="detail-header">
+    <a href="#t:world/0" class="detail-link" data-no-tooltip="" aria-label="Link to this opaque">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">world()</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-opaque</span> world()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+
+    <div class="functions-list">
+<section class="detail" id="fold/4">
+
+  <div class="detail-header">
+    <a href="#fold/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">fold(ComponentList, Fun, Acc0, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> fold([<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()], fun((<a href="#t:id/0">id</a>(), [<a href="#t:component/0">component</a>()], Acc) -> Acc), Acc, <a href="#t:world/0">world</a>()) -> Acc.</pre>
+
+      </div>
+
+<p>Fold a function over all entities matching a given set of components,
+accumulating a result.</p>
+  </section>
+</section>
+<section class="detail" id="foreach/3">
+
+  <div class="detail-header">
+    <a href="#foreach/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">foreach(ComponentList, Fun, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> foreach([<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()], fun((<a href="#t:id/0">id</a>(), [<a href="#t:component/0">component</a>()]) -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:any/0">any</a>()), <a href="#t:world/0">world</a>()) -> ok.</pre>
+
+      </div>
+
+<p>For each entity with the specified Component, apply fun(EntityID, Values).</p>
+  </section>
+</section>
+<section class="detail" id="match/2">
+
+  <div class="detail-header">
+    <a href="#match/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">match(ComponentList, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> match([<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()], <a href="#t:world/0">world</a>()) -> [<a href="#t:entity/0">entity</a>()].</pre>
+
+      </div>
+
+<p>Return all entities matching a given set of components. Returns empty list if
+there are no matches.</p>
+  </section>
+</section>
+<section class="detail" id="put/3">
+
+  <div class="detail-header">
+    <a href="#put/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put(Components, EntityID, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> put([{<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>(), <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()}], <a href="#t:id/0">id</a>(), <a href="#t:world/0">world</a>()) -> <a href="#t:world/0">world</a>().</pre>
+
+      </div>
+
+<p>Associate a component defined as the tuple {key,value} with an entity. If the
+component already exists, it will be replaced with the new value. Returns the
+opaque world() type.</p>
+  </section>
+</section>
+<section class="detail" id="remove/3">
+
+  <div class="detail-header">
+    <a href="#remove/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">remove(Components, EntityID, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> remove([<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()], <a href="#t:id/0">id</a>(), <a href="#t:world/0">world</a>()) -> <a href="#t:world/0">world</a>().</pre>
+
+      </div>
+
+<p>Remove a component from a given entity. This function will always succeed even
+if the component does not exist.</p>
+  </section>
+</section>
+<section class="detail" id="update/4">
+
+  <div class="detail-header">
+    <a href="#update/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update(Name, Fun, EntityID, World)</h1>
+
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">-spec</span> update(<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>(), fun((<a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()) -> <a href="https://www.erlang.org/doc/apps/erts/erlang.html#t:term/0">term</a>()), <a href="#t:id/0">id</a>(), <a href="#t:world/0">world</a>()) -> <a href="#t:world/0">world</a>().</pre>
+
+      </div>
+
+<p>Update a component's value by applying a function to it. The component
+must already exist on the entity.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/ecsalt/2.0.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/ecsalt/2.0.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="ecsalt.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.39.1) for the
+
+          <a href="https://erlang.org" title="Erlang" target="_blank" translate="no">Erlang programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>
