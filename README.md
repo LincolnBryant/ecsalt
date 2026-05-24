@@ -21,7 +21,7 @@ half of the maximum number of ETS tables in your Erlang runtime.
        #Ref<0.3056694120.667287557.234441>}
 ```
 
-### Dynamically entities with attached components
+### Dynamically create entities with attached components
 Suppose we have a fireplace and it has the burning state. The entity ID is an
 arbitrary reference, We represent the Fireplace with a unique reference:
 ```erlang
