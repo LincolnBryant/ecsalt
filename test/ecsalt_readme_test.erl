@@ -96,11 +96,16 @@ foreach_test() ->
     ecsalt_component:put([{hp, 50}, {burning, true}], E2, World),
     ecsalt_component:put([{hp, 75}], E3, World),
     %% Use foreach to damage all burning entities
-    ecsalt_component:foreach([hp, burning], fun(ID, _Components) ->
-        ecsalt_component:update(hp, fun(HP) -> HP - 10 end, ID, World)
-    end, World),
+    ecsalt_component:foreach(
+        [hp, burning],
+        fun(ID, _Components) ->
+            ecsalt_component:update(hp, fun(HP) -> HP - 10 end, ID, World)
+        end,
+        World
+    ),
     %% E1 and E2 should have taken damage, E3 should not
-    [{_, E3Comps}] = ecsalt_component:match([hp], World) -- ecsalt_component:match([hp, burning], World),
+    [{_, E3Comps}] =
+        ecsalt_component:match([hp], World) -- ecsalt_component:match([hp, burning], World),
     ?assertEqual(75, proplists:get_value(hp, E3Comps)),
     BurnedEntities = ecsalt_component:match([hp, burning], World),
     HPs = lists:sort([proplists:get_value(hp, C) || {_, C} <- BurnedEntities]),
@@ -140,9 +145,13 @@ burn_demo_test() ->
     GoblinCat = make_ref(),
     ecsalt_component:put([{hp, 35}, {burning, true}], GoblinCat, World),
     BurnSystem = fun(_Data, W) ->
-        ecsalt_component:foreach([hp, burning], fun(ID, _Components) ->
-            ecsalt_component:update(hp, fun(HP) -> HP - 10 end, ID, W)
-        end, W)
+        ecsalt_component:foreach(
+            [hp, burning],
+            fun(ID, _Components) ->
+                ecsalt_component:update(hp, fun(HP) -> HP - 10 end, ID, W)
+            end,
+            W
+        )
     end,
     World1 = ecsalt_system:register(BurnSystem, World),
     %% Tick 1: 35 -> 25
@@ -175,8 +184,20 @@ system_priority_test() ->
     World1 = ecsalt_system:register(Second, 10, World),
     World2 = ecsalt_system:register(First, 0, World1),
     ecsalt:proc([], World2),
-    ?assertEqual({ran, first}, receive M1 -> M1 after 1000 -> timeout end),
-    ?assertEqual({ran, second}, receive M2 -> M2 after 1000 -> timeout end).
+    ?assertEqual(
+        {ran, first},
+        receive
+            M1 -> M1
+        after 1000 -> timeout
+        end
+    ),
+    ?assertEqual(
+        {ran, second},
+        receive
+            M2 -> M2
+        after 1000 -> timeout
+        end
+    ).
 
 %%---------------------------------------------------------------------
 %% World: delete
