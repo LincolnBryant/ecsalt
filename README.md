@@ -87,7 +87,7 @@ than a mutable ETS table, so we have to save this as World1.
 You can trigger the system whenever you like via proc/1 (short for
 process, a term borrowed from multi-user dungeons):
 ```erlang
-12> ecsalt_gs:proc(World1).
+12> ecsalt:proc(World1).
 The goblin-cat cluelessly smolders...
 [{#Fun<erl_eval.41.130099583>,ok}]
 ```
