@@ -5,7 +5,7 @@ ECSalt (pronounced Exalt) is an Entity-Component-System-like library for Erlang
 applications.
 
 ## Using ECSalt
-For a contrived example, we'll go through adding a system that makes a player
+For a contrived example, we'll go through adding a system that makes a monster 
 take damage if they are on fire.
 
 First start ECSalt:
@@ -74,7 +74,7 @@ system.
 #Fun<erl_eval.42.130099583>
 ```
 
-Now that the System is defined, we can register it.
+The system should now be registered with ECSalt:
 ```erlang
 10> {ok, World1} = ecsalt_system:register(System, World)
 {ok,{world,[{0,#Fun<erl_eval.42.130099583>}],
@@ -90,4 +90,45 @@ process, a term borrowed from multi-user dungeons):
 12> ecsalt:proc(World1).
 The goblin-cat cluelessly smolders...
 [{#Fun<erl_eval.41.130099583>,ok}]
+```
+
+Our goblin-cat is smoldering away, but nothing changes the state of the
+critter. The next thing that we need is a closure that reduces the HP of
+burning entities:
+```erlang
+BurnSystem = fun(_Data, World) -> 
+    Hurt = fun({ID, Components}) ->
+        HP = proplists:get_value(hp, Components),
+        ecsalt_component:put([{hp, HP - 10}], ID, World),
+        io:format("Sizzle.. hiss.. crackle..~n")
+        end,
+    BurningEntities = ecsalt_component:match([hp, burning], World),
+    lists:foreach(Hurt, BurningEntities)
+    end,
+ecsalt_system:register(BurnSystem, World).
+```
+
+If we run the `proc` again, representing a game, tick, we see the clueless critter losing HP and finally meeting its end:
+```erlang
+
+8> ecsalt:proc([], World2).
+Sizzle.. hiss.. crackle..
+The goblin-cat cluelessly smolders...
+[{#Fun<erl_eval.41.130099583>,ok},
+ {#Fun<erl_eval.41.130099583>,ok}]
+9> ecsalt:proc([], World2).
+Sizzle.. hiss.. crackle..
+The goblin-cat cluelessly smolders...
+[{#Fun<erl_eval.41.130099583>,ok},
+ {#Fun<erl_eval.41.130099583>,ok}]
+10> ecsalt:proc([], World2).
+Sizzle.. hiss.. crackle..
+The goblin-cat cluelessly smolders...
+[{#Fun<erl_eval.41.130099583>,ok},
+ {#Fun<erl_eval.41.130099583>,ok}]
+11> ecsalt:proc([], World2).
+Sizzle.. hiss.. crackle..
+Kitty is cooked!
+[{#Fun<erl_eval.41.130099583>,ok},
+ {#Fun<erl_eval.41.130099583>,ok}]
 ```
