@@ -11,13 +11,17 @@ applications.
 For a contrived example, we'll go through adding a system that makes a monster 
 take damage if they are on fire.
 
-First start ECSalt:
+### Creating the ECS World
+First start a new ECSalt "world". Worlds are collections of entities,
+components, and systems. You may start any number of ECSalt worlds, up to the
+half of the maximum number of ETS tables in your Erlang runtime.
 ```erlang
 1> World = ecsalt:new().
 {world,[],#Ref<0.1960388004.2533228547.251798>,
        #Ref<0.1960388004.2533228547.251799>}
 ```
 
+### Dynamically entities with attached components
 Suppose we have a fireplace and it has the burning state. The entity ID is an
 arbitrary reference, We represent the Fireplace with a unique reference:
 ```erlang
@@ -41,6 +45,7 @@ at once:
 ok
 ```
 
+### Matching on component lists
 Now suppose want to check for all entities that are on fire and have some
 health points (HP). We can use the `match/2` function in the component module
 to *only* return the functions that match all required components. For example,
@@ -52,6 +57,7 @@ doesn't have HP:
   [{burning,true},{hp,35},{color,green},{brain_cells,1}]}]
 ```
 
+### Registering systems
 We can also define systems that will act on collections of components. Systems
 must be one of: `fun` with arity of 2, a `mfa()` tuple of the form {Module,
 Fun, 2}. Suppose we have a system that checks if the cat is on fire and updates
@@ -87,6 +93,7 @@ The system should now be registered with ECSalt:
 Note that World changed here. We are updating a map in the World record, rather
 than a mutable ETS table, so we have to save this as World1.
 
+### Activating systems
 You can trigger the system whenever you like via proc/1 (short for
 process, a term borrowed from multi-user dungeons). We pass an empty list as
 extra data -- none of our systems use it.
@@ -96,6 +103,7 @@ The goblin-cat cluelessly smolders...
 [{#Fun<erl_eval.41.130099583>,ok}]
 ```
 
+### Using the foreach construction
 Our goblin-cat is smoldering away, but nothing changes the state of the
 critter. We want to reduce the HP of any burning creatures every time the
 system triggers (i.e., procs). This time we can use the `foreach/3` function to
@@ -113,6 +121,7 @@ BurnSystem =
 ecsalt_system:register(BurnSystem, World).
 ```
 
+### Demo
 If we run the `proc` again, representing a game, tick, we see the clueless
 critter losing HP and, finally, becoming easy dinner:
 ```erlang
