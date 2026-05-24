@@ -85,36 +85,39 @@ Note that World changed here. We are updating a map in the World record, rather
 than a mutable ETS table, so we have to save this as World1.
 
 You can trigger the system whenever you like via proc/1 (short for
-process, a term borrowed from multi-user dungeons):
+process, a term borrowed from multi-user dungeons). We pass an empty list as
+extra data -- none of our systems use it.
 ```erlang
-12> ecsalt:proc(World1).
+12> ecsalt:proc([], World1).
 The goblin-cat cluelessly smolders...
 [{#Fun<erl_eval.41.130099583>,ok}]
 ```
 
 Our goblin-cat is smoldering away, but nothing changes the state of the
-critter. The next thing that we need is a closure that reduces the HP of
-burning entities:
+critter. We want to reduce the HP of any burning creatures every time the
+system triggers (i.e., procs). This time we can use the `foreach/3` function to
+simplify things a bit:
 ```erlang
-BurnSystem = fun(_Data, World) -> 
-    Hurt = fun({ID, Components}) ->
-        HP = proplists:get_value(hp, Components),
-        ecsalt_component:put([{hp, HP - 10}], ID, World),
-        io:format("Sizzle.. hiss.. crackle..~n")
-        end,
-    BurningEntities = ecsalt_component:match([hp, burning], World),
-    lists:foreach(Hurt, BurningEntities)
+BurnSystem = 
+    fun(_Data, World) ->
+        ecsalt_component:foreach([hp, burning], 
+            fun(ID, _Components) ->
+                ecsalt_component:update(hp, fun(HP) -> HP - 10 end, ID, World),
+                io:format("Sizzle.. hiss.. crackle..~n")
+            end, 
+        World)
     end,
 ecsalt_system:register(BurnSystem, World).
 ```
 
-If we run the `proc` again, representing a game, tick, we see the clueless critter losing HP and finally meeting its end:
+If we run the `proc` again, representing a game, tick, we see the clueless
+critter losing HP and, finally, becoming easy dinner:
 ```erlang
 
 8> ecsalt:proc([], World2).
 Sizzle.. hiss.. crackle..
 The goblin-cat cluelessly smolders...
-[{#Fun<erl_eval.41.130099583>,ok},
+[akao{#Fun<erl_eval.41.130099583>,ok},
  {#Fun<erl_eval.41.130099583>,ok}]
 9> ecsalt:proc([], World2).
 Sizzle.. hiss.. crackle..
