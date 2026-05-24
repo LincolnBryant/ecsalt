@@ -1,10 +1,9 @@
-{application, ecsalt, [
-    {description, "ecsalt"},
-    {vsn, "2.0.0"},
-    {registered, []},
-    {applications, [kernel, stdlib]},
-	{licenses, ["MPL-2.0"]},
-	{links, #{ "github" => "https://github.com/lincolnbryant/ecsalt" }},
-    {env, []},
-    {modules, []}
-]}.
+{application,ecsalt,
+             [{description,"ecsalt"},
+              {vsn,"2.0.1"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {licenses,["MPL-2.0"]},
+              {links,#{"github" => "https://github.com/lincolnbryant/ecsalt"}},
+              {env,[]},
+              {modules,[]}]}.

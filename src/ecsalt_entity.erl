@@ -1,4 +1,5 @@
 -module(ecsalt_entity).
+-moduledoc "Functions for interacting with entities stored in ECSalt worlds".
 
 -include("ecsalt.hrl").
 
