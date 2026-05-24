@@ -7,7 +7,19 @@ ECSalt - Entity Component System for Erlang
 ECSalt (pronounced Exalt) is an Entity-Component-System-like library for Erlang
 applications.
 
-## Using ECSalt
+## Installing
+You can now find ECSalt on hex.pm! [https://hex.pm/packages/ecsalt](https://hex.pm/packages/ecsalt)
+
+Simply add it to your dependencies list to add it to your project:
+
+
+```erlang
+{deps, [
+	ecsalt %, your other deps here.. 
+]}.
+```
+
+## How to use
 To demonstate how to use ECSalt, we'll go through adding a system that makes a monster 
 take damage if they are on fire.
 
