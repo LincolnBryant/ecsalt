@@ -10,4 +10,4 @@
 -type entity() :: {term(), [component()]}.
 -export_type([entity/0]).
 -type system() :: {mfa() | fun()}.
--type id() :: integer().
+-type id() :: identifier().
