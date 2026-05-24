@@ -14,15 +14,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 -doc """
-Start the ECS with ETS tables set to public, return them in an opaque
-world() type to the caller 
+Create a new ECS world with default ETS options (public tables). Returns an
+opaque world record used by all other API functions.
+
+See also new/1, especially if you need to start ECS with public tables for
+multi-process access.
 """.
 -spec new() -> world().
 new() ->
+    new([]).
+
+-doc """
+Create a new ECS world with custom ETS options (e.g., read concurrency, public
+tables). Table types are enforced internally and cannot be overridden. Returns
+an opaque world record used by all other API functions.
+""".
+-spec new(list()) -> world().
+new(ETSOpts) ->
+    SafeOpts = ETSOpts -- [set, bag, duplicate_bag, ordered_set],
     #world{
         systems = [],
-        entities = ets:new(entities, [set, public]),
-        components = ets:new(components, [bag, public])
+        entities = ets:new(entities, [set | SafeOpts]),
+        components = ets:new(components, [bag | SafeOpts])
     }.
 
 -doc "Stop the ECS and delete the ETS tables".
