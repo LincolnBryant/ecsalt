@@ -1,7 +1,7 @@
 -module(ecsalt_system).
 -moduledoc "Register, list, and unregister callbacks".
 
-%% @hank ignore
+-hank([{unused_callbacks, [{proc, 2}]}]).
 -callback proc(Data :: term(), World :: ecsalt:world()) -> term().
 
 -include("ecsalt.hrl").
