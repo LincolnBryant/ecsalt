@@ -8,7 +8,7 @@ ECSalt (pronounced Exalt) is an Entity-Component-System-like library for Erlang
 applications.
 
 ## Using ECSalt
-For a contrived example, we'll go through adding a system that makes a monster 
+To demonstate how to use ECSalt, we'll go through adding a system that makes a monster 
 take damage if they are on fire.
 
 ### Creating the ECS World
