@@ -5,7 +5,7 @@
 -export([new/2, delete/2, get/2, list/1]).
 
 -doc "Insert a new entity into the entity table, identified by EntityID".
--spec new(id(), world()) -> ok.
+-spec new(id(), world()) -> world().
 new(EntityID, World) ->
     #world{entities = E} = World,
     case ets:lookup(E, EntityID) of
@@ -14,10 +14,11 @@ new(EntityID, World) ->
             ets:insert(E, {EntityID, []});
         _Entity ->
             ok
-    end.
+    end,
+    World.
 
 -doc "Delete a given entity from the entity table".
--spec delete(id(), world()) -> ok.
+-spec delete(id(), world()) -> world().
 delete(EntityID, World) ->
     #world{entities = E, components = C} = World,
     case ets:lookup(E, EntityID) of
@@ -33,7 +34,8 @@ delete(EntityID, World) ->
              || {N, _} <- Components
             ],
             ok
-    end.
+    end,
+    World.
 
 -doc "Get an entity and all attached components, otherwise false".
 -spec get(id(), world()) -> {id(), [term()]} | false.

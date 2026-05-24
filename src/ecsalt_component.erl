@@ -17,7 +17,7 @@ put(Components, EntityID, World) ->
             put_one(Name, Data, EntityID, World)
         end,
     lists:foreach(F, Components),
-	World.
+    World.
 
 -doc """
 Remove a component from a given entity. This function will always succeed even
@@ -30,7 +30,7 @@ remove(Components, EntityID, World) ->
             remove_one(Component, EntityID, World)
         end,
     ok = lists:foreach(F, Components),
-	World.
+    World.
 
 -doc """
 Update a component's value by applying a function to it. The component
