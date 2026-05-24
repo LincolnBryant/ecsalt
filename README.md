@@ -17,8 +17,8 @@ components, and systems. You may start any number of ECSalt worlds, up to the
 half of the maximum number of ETS tables in your Erlang runtime.
 ```erlang
 1> World = ecsalt:new().
-{world,[],#Ref<0.1960388004.2533228547.251798>,
-       #Ref<0.1960388004.2533228547.251799>}
+{world,[],#Ref<0.3056694120.667287557.234440>,
+       #Ref<0.3056694120.667287557.234441>}
 ```
 
 ### Dynamically entities with attached components
@@ -26,8 +26,14 @@ Suppose we have a fireplace and it has the burning state. The entity ID is an
 arbitrary reference, We represent the Fireplace with a unique reference:
 ```erlang
 2> Fireplace = make_ref().
+```
+
+Then we put/3 it into the ECSalt world. Note that functions updating the world
+will always return a world() record.
+```erlang
 3> ecsalt_component:put([{burning, true}], Fireplace, World).
-ok
+{world,[],#Ref<0.3056694120.667287557.234440>,
+       #Ref<0.3056694120.667287557.234441>}
 ```
 
 Now let's imagine a goblin-cat snuggles a bit too close to the fireplace and
@@ -35,15 +41,19 @@ starts smoldering:
 ```erlang
 4> GoblinCat = make_ref().
 5> ecsalt_component:put([{burning, true}], GoblinCat, World).
-ok
+{world,[],#Ref<0.3056694120.667287557.234440>,
+       #Ref<0.3056694120.667287557.234441>}
 ```
 
 The put/3 function takes a list of components, so we can add several components
-at once:
+at once. 
 ```erlang
 6> ecsalt_component:put([{hp, 35}, {color, green}, {brain_cells, 1}], GoblinCat, World).
-ok
+{world,[],#Ref<0.3056694120.667287557.234440>,
+       #Ref<0.3056694120.667287557.234441>}
 ```
+Any component put/3 into the ECS will overwrite previous components for the
+same entity.
 
 ### Matching on component lists
 Now suppose want to check for all entities that are on fire and have some
@@ -53,8 +63,8 @@ our radiant goblin-cat matches here, but the fireplace does not because it
 doesn't have HP:
 ```erlang
 7> ecsalt_component:match([hp, burning], World).
-[{#Ref<0.1707322081.1329856513.118511>,
-  [{burning,true},{hp,35},{color,green},{brain_cells,1}]}]
+[{#Ref<0.3056694120.667156485.234478>,
+  [{hp,35},{color,green},{brain_cells,1},{burning,true}]}]
 ```
 
 ### Registering systems
@@ -85,13 +95,13 @@ system.
 
 The system should now be registered with ECSalt:
 ```erlang
-10> {ok, World1} = ecsalt_system:register(System, World)
-{ok,{world,[{0,#Fun<erl_eval.42.130099583>}],
-           #Ref<0.1707322081.1329987585.118543>,
-           #Ref<0.1707322081.1329987585.118544>}}
+10> World1 = ecsalt_system:register(System, World)
+{world,[{0,#Fun<erl_eval.41.130099583>}],
+       #Ref<0.3056694120.667287557.234440>,
+       #Ref<0.3056694120.667287557.234441>}
 ```
-Note that World changed here. We are updating a map in the World record, rather
-than a mutable ETS table, so we have to save this as World1.
+Note that we have to update the World binding here. You should always treat
+World as an opaque object, but when adding/removing systems you _must_ do so.
 
 ### Activating systems
 You can trigger the system whenever you like via proc/1 (short for
