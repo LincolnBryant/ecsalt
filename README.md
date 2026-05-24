@@ -10,69 +10,84 @@ take damage if they are on fire.
 
 First start ECSalt:
 ```erlang
-1> World = ecsalt_gs:start().
+1> World = ecsalt:new().
 {world,[],#Ref<0.1960388004.2533228547.251798>,
        #Ref<0.1960388004.2533228547.251799>}
 ```
 
-Suppose we have a fireplace and it has the burning state. We represent the
-Fireplace with the ID 1:
+Suppose we have a fireplace and it has the burning state. The entity ID is an
+arbitrary reference, We represent the Fireplace with a unique reference:
 ```erlang
-2> Fireplace = 1.
-3> ecsalt_gs:add_component(burning, true, Fireplace, World).
-```
-
-Now let's imagine an alley cat snuggles a bit too close to the fireplace and
-starts smoldering:
-```erlang
-4> Cat = 2.
-5> ecsalt_gs:add_component(burning, true, Cat, World).
+2> Fireplace = make_ref().
+3> ecsalt_component:put([{burning, true}], Fireplace, World).
 ok
 ```
 
-You can give the cat a few more properties with the plural `add_components/3`
-function:
+Now let's imagine a goblin-cat snuggles a bit too close to the fireplace and
+starts smoldering:
 ```erlang
-6> ecsalt_gs:add_components([{hp, 100}, {color, orange}, {brain_cells, 1}], Cat, World).
+4> GoblinCat = make_ref().
+5> ecsalt_component:put([{burning, true}], GoblinCat, World).
+ok
 ```
 
-Now suppose want to check for all entities that are on fire and have an HP
-(health points) component. We can use the `match_components/2` function that
-will *only* return the functions that match all required components. For
-example, our toasty orange cat matches here, but the fireplace does not because
-it doesn't have HP.
+The put/3 function takes a list of components, so we can add several components
+at once:
 ```erlang
-7> ecsalt_gs:match_components([hp, burning], World).
-[{2, [{hp, 100}, {color, orange}, {brain_cells, 1}, {burning, true}]}]
+6> ecsalt_component:put([{hp, 35}, {color, green}, {brain_cells, 1}], GoblinCat, World).
+ok
+```
+
+Now suppose want to check for all entities that are on fire and have some
+health points (HP). We can use the `match/2` function in the component module
+to *only* return the functions that match all required components. For example,
+our radiant goblin-cat matches here, but the fireplace does not because it
+doesn't have HP:
+```erlang
+7> ecsalt_component:match([hp, burning], World).
+[{#Ref<0.1707322081.1329856513.118511>,
+  [{burning,true},{hp,35},{color,green},{brain_cells,1}]}]
 ```
 
 We can also define systems that will act on collections of components. Systems
 must be one of: `fun` with arity of 2, a `mfa()` tuple of the form {Module,
-Fun, Arity} where the function's arity can be 1 or 2. Suppose we have a system
-that checks if the cat is on fire and updates their HP accordingly:
+Fun, 2}. Suppose we have a system that checks if the cat is on fire and updates
+their HP accordingly. We define a fun that reports the critter's status, and
+wrap that in another fun that matches the required callback for an ECSalt
+system.
 ```erlang
-8> G = fun({ID, Components}) ->
-      HP = ecsalt_gs:get(hp, Components),
-      if HP < 100 -> io:format("Kitty on fire!!");
-         true -> io:format("Kitty is dead!")
-      end,
-      ecsalt_gs:add_component(hp, HP - 10, ID, World)
+8> Report = fun({ID, Components}) ->
+      HP = proplists:get_value(hp, Components),
+      case HP of
+        Value when Value =< 0 ->
+            io:format("Kitty is cooked!~n");
+        _ -> 
+            io:format("The goblin-cat smolders cluelessly...~n")
+      end
     end.
 #Fun<erl_eval.41.39164016>
-10> System = fun(_Data, World) ->
-      Matches = ecsalt_gs:match_components([hp, burning], World),
-      lists:foreach(G, Matches)
-    end.
-#Fun<erl_eval.41.39164016>
-11> ecsalt_gs:add_system(System, World).
-{ok,{world,[{100,#Fun<erl_eval.41.39164016>}],
-           #Ref<0.1960388004.2533228547.253612>,
-           #Ref<0.1960388004.2533228547.253613>}}
+9> System = 
+        fun(_Data, World) ->
+            Matches = ecsalt_component:match([hp, burning], World),
+            lists:foreach(Report, Matches)
+        end.
+#Fun<erl_eval.42.130099583>
 ```
 
-Now you can 'proc' (a term borrowed from multi-user dungeons) this system
-periodically:
+Now that the System is defined, we can register it.
+```erlang
+10> {ok, World1} = ecsalt_system:register(System, World)
+{ok,{world,[{0,#Fun<erl_eval.42.130099583>}],
+           #Ref<0.1707322081.1329987585.118543>,
+           #Ref<0.1707322081.1329987585.118544>}}
+```
+Note that World changed here. We are updating a map in the World record, rather
+than a mutable ETS table, so we have to save this as World1.
+
+You can trigger the system whenever you like via proc/1 (short for
+process, a term borrowed from multi-user dungeons):
 ```erlang
 12> ecsalt_gs:proc(World1).
-[{#Fun<erl_eval.41.39164016>,ok}]
+The goblin-cat cluelessly smolders...
+[{#Fun<erl_eval.41.130099583>,ok}]
 ```
