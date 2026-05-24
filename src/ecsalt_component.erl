@@ -1,48 +1,54 @@
 -module(ecsalt_component).
+-moduledoc "Put, remove, and query named data on entities.".
 
 -include("ecsalt.hrl").
 
--export([put/3, remove/3, find/3, match/2, foreach/3]).
+-export([put/3, remove/3, match/2, foreach/3]).
 
--spec put([{term(), term()}], id(), world()) -> ok.
+-doc """
+Associate a component defined as the tuple {key,value} with an entity. If the
+component already exists, it will be replaced with the new value. Returns the
+opaque world() type.
+""".
+-spec put([{term(), term()}], id(), world()) -> world().
 put(Components, EntityID, World) ->
     F =
-        fun({Component, Data}) ->
-            put_one(Component, Data, EntityID, World)
+        fun({Name, Data}) ->
+            put_one(Name, Data, EntityID, World)
         end,
-    ok = lists:foreach(F, Components).
+    lists:foreach(F, Components),
+	World.
 
--spec remove([term()], id(), world()) -> ok.
+-doc """
+Remove a component from a given entity. This function will always succeed even
+if the component does not exist.
+""".
+-spec remove([term()], id(), world()) -> world().
 remove(Components, EntityID, World) ->
     F =
         fun(Component) ->
             remove_one(Component, EntityID, World)
         end,
-    ok = lists:foreach(F, Components).
+    ok = lists:foreach(F, Components),
+	World.
 
--spec find(term(), id(), world()) -> {ok, [term()]} | error.
-find(ComponentName, EntityID, World) ->
-    #world{entities = E, components = C} = World,
-    case ets:match_object(C, {ComponentName, EntityID}) of
-        [] ->
-            false;
-        _Match ->
-            % It exists in the component table, so return the Entity data
-            % back to the caller
-            [{EntityID, Data}] = ets:lookup(E, EntityID),
-            {ok, Data}
-    end.
-
+-doc """
+Return all entities matching a given set of components. Returns empty list if
+there are no matches.
+""".
 -spec match([term()], world()) -> [entity()].
-match(List, World) ->
+match(ComponentList, World) ->
     % Multi-match. Try to match several components and return the common
     % elements. Use sets v2 introduced in OTP 24
     Sets = [
         sets:from_list(match_one(X, World), [{version, 2}])
-     || X <- List
+     || X <- ComponentList
     ],
     sets:to_list(sets:intersection(Sets)).
 
+-doc """
+For each entity with the specified Component, apply fun(EntityID, Values).
+""".
 -spec foreach(fun(), term(), world()) -> ok.
 foreach(Fun, Component, World) ->
     Entities = match_one(Component, World),
