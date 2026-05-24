@@ -1,8 +1,8 @@
 -module(ecsalt).
--doc "Entity Component System".
+-moduledoc "Entity Component System".
 
 -export([new/0, delete/1]).
--export([proc/1, proc/2, to_map/1]).
+-export([proc/2, to_map/1]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Types and Records
@@ -45,17 +45,10 @@ to_map({EntityID, Components}) ->
     EMap#{id => EntityID}.
 
 -doc """
-For every registered system, trigger the proc callback and gather results.
-""".
--spec proc(world()) -> any().
-proc(World) ->
-    proc([], World).
-
--doc """
 For every registered system, trigger the proc callback with some extra data
 specified by Data and gather results.
 """.
--spec proc(any(), world()) -> [any()].
+-spec proc(term(), world()) -> [any()].
 proc(Data, World) ->
     #world{systems = Systems} = World,
     Fun = fun({_Prio, Sys}, Acc) ->
