@@ -1,6 +1,9 @@
 ECSalt - Entity Component System for Erlang
 ===========================================
 
+[![Casual Maintenance Intended](https://casuallymaintained.tech/badge.svg)](https://casuallymaintained.tech/)
+
+
 ECSalt (pronounced Exalt) is an Entity-Component-System-like library for Erlang
 applications.
 
