@@ -165,8 +165,8 @@ ecsalt
 
       </div>
 
-        <div class="summary-synopsis"><p>Start the ECS with ETS tables set to public, return them in an opaque
-world() type to the caller</p></div>
+        <div class="summary-synopsis"><p>Create a new ECS world with default ETS options. Returns an opaque world record
+used by all other API functions.</p></div>
 
     </div>
 
@@ -337,8 +337,9 @@ atoms!</p></div>
 
       </div>
 
-<p>Start the ECS with ETS tables set to public, return them in an opaque
-world() type to the caller</p>
+<p>Create a new ECS world with default ETS options. Returns an opaque world record
+used by all other API functions.</p><p>See also new/1, especially if you need to start ECSalt with public tables for
+multi-process access.</p>
   </section>
 </section>
 <section class="detail" id="proc/2">
