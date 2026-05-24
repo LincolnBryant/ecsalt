@@ -3,7 +3,7 @@
 
 -include("ecsalt.hrl").
 
--export([put/3, remove/3, match/2, foreach/3]).
+-export([put/3, remove/3, update/4, match/2, fold/4, foreach/3]).
 
 -doc """
 Associate a component defined as the tuple {key,value} with an entity. If the
@@ -33,6 +33,18 @@ remove(Components, EntityID, World) ->
 	World.
 
 -doc """
+Update a component's value by applying a function to it. The component
+must already exist on the entity.
+""".
+-spec update(term(), fun((term()) -> term()), id(), world()) -> world().
+update(Name, Fun, EntityID, World) ->
+    #world{entities = E} = World,
+    [{EntityID, ComponentList}] = ets:lookup(E, EntityID),
+    {Name, OldData} = lists:keyfind(Name, 1, ComponentList),
+    put_one(Name, Fun(OldData), EntityID, World),
+    World.
+
+-doc """
 Return all entities matching a given set of components. Returns empty list if
 there are no matches.
 """.
@@ -47,17 +59,21 @@ match(ComponentList, World) ->
     sets:to_list(sets:intersection(Sets)).
 
 -doc """
+Fold a function over all entities matching a given set of components,
+accumulating a result.
+""".
+-spec fold([term()], fun((id(), [component()], Acc) -> Acc), Acc, world()) -> Acc.
+fold(ComponentList, Fun, Acc0, World) ->
+    Entities = match(ComponentList, World),
+    lists:foldl(fun({ID, Components}, Acc) -> Fun(ID, Components, Acc) end, Acc0, Entities).
+
+-doc """
 For each entity with the specified Component, apply fun(EntityID, Values).
 """.
--spec foreach(fun(), term(), world()) -> ok.
-foreach(Fun, Component, World) ->
-    Entities = match_one(Component, World),
-    F =
-        fun({ID, EntityComponents}) ->
-            Values = proplists:get_value(Component, EntityComponents),
-            Fun(ID, Values)
-        end,
-    ok = lists:foreach(F, Entities).
+-spec foreach([term()], fun((id(), [component()]) -> any()), world()) -> ok.
+foreach(ComponentList, Fun, World) ->
+    Entities = match(ComponentList, World),
+    lists:foreach(fun({ID, Components}) -> Fun(ID, Components) end, Entities).
 
 % Internal API
 put_one(Name, Data, EntityID, World) ->
