@@ -1,7 +1,7 @@
 -module(ecsalt).
 -moduledoc "Entity Component System".
 
--export([new/0, delete/1]).
+-export([new/0, new/1, delete/1]).
 -export([proc/2, to_map/1]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
